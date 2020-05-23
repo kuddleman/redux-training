@@ -41,6 +41,14 @@ function goals ( state = [], action ) {
   }
 }
 
+//this is the 'root reducer', app.  App will be passed to createStore.
+function app ( state = {}, action ) {
+  return {
+    todos: todos( state.todos, action ),
+    goals: goals( state.goals, action )
+  }
+}
+
 
 
 // this is the LIBRARY CODE:
@@ -85,7 +93,7 @@ function createStore( reducer ) {
 
 
 // Here's what the above code looks like in action:
-// pass to createStore the reducer: todos
+// pass to createStore the reducer: todos.  createStore can take ONLY ONE FUNCTION:
 // store will have 3 methods on it:  getState, subscribe, and dispatch
 
 const store = createStore(todos)
