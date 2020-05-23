@@ -13,12 +13,32 @@
 // a REDUCER MUST BE A PURE FUNCTION.  IT UPDATES STATE OF THE ELEMENT, no the store...
 
 //this is the APP CODE:
+//this is the TODOS REDUCER:
 function todos ( state = [], action ) {
-  if ( action.type === 'ADD_TODO' ) {
-    return state.concat([ action.todo ])
+  
+  switch(action.type) {
+    case 'ADD_TODO' :
+      return state.concat([action.todo])
+    case 'REMOVE_TODO' :
+      return state.filter((todo) => todo.id !== action.id)
+    case 'TOGGLE_TODO' :
+      return state.map((todo) => todo.id !== action.id ? todo :
+        Object.assign({}, todo, { complete: !todo.complete }))
+    default :
+      return state
   }
+}
 
-  return state
+// THIS IS THE GOALS REDUCER:
+function goals ( state = [], action ) {
+  switch( action.type ) {
+    case 'ADD_GOAL':
+      return state.concat([action.goal])
+    case 'REMOVE_GOAL':
+      return state.filter( goal => goal.id !== action.id )
+    default:
+      return state  
+  }
 }
 
 
@@ -65,7 +85,7 @@ function createStore( reducer ) {
 
 
 // Here's what the above code looks like in action:
-// pass to createStore the reducer todos
+// pass to createStore the reducer: todos
 // store will have 3 methods on it:  getState, subscribe, and dispatch
 
 const store = createStore(todos)
