@@ -11,6 +11,8 @@
           //c. a pure function does not product side effects.  Ex. no interaction with outside world...no API requests.
 //this function is a reducer:  it takes in previous state and an action and reduces it down to a new state.
 // a REDUCER MUST BE A PURE FUNCTION.  IT UPDATES STATE OF THE ELEMENT, no the store...
+
+//this is the APP CODE:
 function todos ( state = [], action ) {
   if ( action.type === 'ADD_TODO' ) {
     return state.concat([ action.todo ])
@@ -21,7 +23,7 @@ function todos ( state = [], action ) {
 
 
 
-
+// this is the LIBRARY CODE:
 function createStore( reducer ) {
 
   // The store must have 4 parts:
@@ -56,7 +58,30 @@ function createStore( reducer ) {
     getState,
     subscribe,
     dispatch,   //dispatch modifies the state in the store
+    //the store object's methods have access to the state of the store via closure
   )
 
 }
+
+
+// Here's what the above code looks like in action:
+// pass to createStore the reducer todos
+// store will have 3 methods on it:  getState, subscribe, and dispatch
+
+const store = createStore(todos)
+//this is a listener function the store will call when the state changes
+store.subscribe(() => {
+  console.log("The new state is: ", store.getState)
+})
+
+
+//now call dispatch to make changes to the store's state
+store.dispatch({
+  type: 'ADD_TODO',
+  todo:  {
+    id: 0,
+    name: 'Learn Redux',
+    complete: false
+  }
+})
 
